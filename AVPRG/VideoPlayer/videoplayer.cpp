@@ -32,15 +32,6 @@ VideoPlayer::~VideoPlayer()
     delete ui;
     delete videoProcessor;
 }
-/*
-void VideoPlayer::on_actionVideodatei_ffnen_triggered()
-{
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Movie"),QDir::homePath());
-
-    if (!fileName.isEmpty()) {
-        videoThread->openFile(fileName);
-     }
-}*/
 
 void VideoPlayer::on_actionKamera_ffnen_triggered()
 {
@@ -55,36 +46,13 @@ void VideoPlayer::on_actionPlay_triggered()
     int i=0;
     videoThread->start();
 
-    /*while(true){
-     if(i==100){
-    if(isnew==true){
-     tmp=videoProcessor->getCenterandColor(videoProcessor->getImage());
-    midiOutput.sendNoteOn(1,tmp,127);
-    QTextStream out(stdout);
-    out<<tmp;
 
-    isnew=false;
-    }
-    else{
-        if(tmp==videoProcessor->getCenterandColor(videoProcessor->getImage())){
-            isnew=false;
-
-        }
-        else{
-            isnew=true;
-        }
-    }
-    i=0;
-     }
-     else{
-         i++;
-     }
-    }*/
 }
 
 void VideoPlayer::on_horizontalSlider_valueChanged(int value)
 {
     videoProcessor->setThreshold(value);
+
 }
 void VideoPlayer::on_comboBox_activated(const QString &arg1)
 {
@@ -93,6 +61,7 @@ void VideoPlayer::on_comboBox_activated(const QString &arg1)
 void VideoPlayer::sendMidi(){
 int tmp=videoProcessor->getCenterandColor(videoProcessor->getImage());
 midiOutput.sendNoteOn(0,tmp,127);
+ui->lcdNumber->display(tmp);
 //QTextStream out(stdout);
 //out<<tmp;
 }

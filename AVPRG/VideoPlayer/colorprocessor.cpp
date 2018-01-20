@@ -32,11 +32,11 @@ cv::Mat ColorProcessor::process(const cv::Mat& input){
            int g = inputPixel[1];
            int b = inputPixel[0];
             //yellow ist jetz blau
-           int distanceyellow = sqrt((r-0)*(r-0) + (g-25)*(g-25) + (b-80)*(b-80));
+           int distanceblue = sqrt((r-0)*(r-0) + (g-25)*(g-25) + (b-80)*(b-80));
            int distancered = sqrt((r-250)*(r-250) + (g-40)*(g-40) + (b-0)*(b-0));
            int distancegreen = sqrt((r-0)*(r-0) + (g-100)*(g-100) + (b-0)*(b-0));
 
-           if(distanceyellow < threshold){
+           if(distanceblue < threshold){
                if(x>100&&x<605&&y>90&&y<415){
                r = 0;
                g = 25;
@@ -83,13 +83,13 @@ cv::Mat ColorProcessor::process(const cv::Mat& input){
 int ColorProcessor::getCenterandColor(const Mat &input){
     int region;
     int blackpixel=0;
-    int yellowpixel=0;
+    int bluepixel=0;
     int redpixel=0;
     int greenpixel=0;
     int rsumy =0;
     int rsumx =0;
-    int ysumy =0;
-    int ysumx =0;
+    int bsumy =0;
+    int bsumx =0;
     int gsumy =0;
     int gsumx =0;
     int centerX=0;
@@ -101,9 +101,9 @@ int ColorProcessor::getCenterandColor(const Mat &input){
             int g = inputPixel[1];
             int b = inputPixel[0];
             if(r==0&&g==25&&b==85){
-                yellowpixel++;
-                ysumx += x;
-                ysumy += y;
+                bluepixel++;
+                bsumx += x;
+                bsumy += y;
             }
             else if(r==150&&g==11){
                 redpixel++;
@@ -120,18 +120,18 @@ int ColorProcessor::getCenterandColor(const Mat &input){
             }
         }
     }
-    if(yellowpixel>redpixel&&yellowpixel>greenpixel){
-        centerX = ysumx/yellowpixel;
-        centerY = ysumy/yellowpixel;
+    if(bluepixel>redpixel&&bluepixel>greenpixel){
+        centerX = bsumx/bluepixel;
+        centerY = bsumy/bluepixel;
         region=getRegion(centerX,centerY)+3;
 
     }
-    else if(greenpixel>yellowpixel&&greenpixel>redpixel){
+    else if(greenpixel>bluepixel&&greenpixel>redpixel){
         centerX = gsumx/greenpixel;
         centerY = gsumy/greenpixel;
         region=getRegion(centerX,centerY)+2;
     }
-    else if(redpixel>yellowpixel&&redpixel>greenpixel){
+    else if(redpixel>bluepixel&&redpixel>greenpixel){
         centerX = rsumx/redpixel;
         centerY = rsumy/redpixel;
         region=getRegion(centerX,centerY)+1;
@@ -148,7 +148,7 @@ int ColorProcessor::getCenterandColor(const Mat &input){
 }
 int ColorProcessor::getRegion(int x, int y){
     int region=0;
-    //6 if abfragen einfügen
+
     //Theater
     if(327>x&&x>230&&180>y&&y>90){
         region=10;
